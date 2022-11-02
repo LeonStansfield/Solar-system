@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Prefabs/Solar system/Planets/Sun/Sun.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Prefabs/Solar system/Planets/Test_planet/Test_Planet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/Player/Camera_freelook.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/celestial_bodies/body_holder.gd" type="Script" id=4]
+
+[node name="Solar System" type="Spatial"]
+
+[node name="Celestial bodies" type="Spatial" parent="."]
+script = ExtResource( 4 )
+
+[node name="Sun" parent="Celestial bodies" instance=ExtResource( 1 )]
+mass = 500.0
+is_sun = true
+
+[node name="Planet" parent="Celestial bodies" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 400 )
+mass = 300.0
+initial_velocity = Vector3( 100, 0, 0 )
+
+[node name="PlanetAthmosphere" parent="Celestial bodies/Planet" index="0"]
+sun_path = NodePath("../../Sun")
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( -4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, 0, 500, 0 )
+far = 10000.0
+script = ExtResource( 3 )
+
+[editable path="Celestial bodies/Planet"]
