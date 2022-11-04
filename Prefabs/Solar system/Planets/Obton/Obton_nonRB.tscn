@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Addons/zylann.atmosphere/planet_atmosphere.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Addons/lod/lod_spatial.gd" type="Script" id=2]
+[ext_resource path="res://Prefabs/Solar system/Planets/Obton/Meshes/-lod0.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Prefabs/Solar system/Planets/Obton/Meshes/-lod1.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Prefabs/Solar system/Planets/Obton/Meshes/-lod2.tscn" type="PackedScene" id=5]
+
+[sub_resource type="SphereShape" id=1]
+radius = 33.0
+
+[node name="Obton" type="StaticBody" groups=["Gravity_body"]]
+
+[node name="PlanetAthmosphere" parent="." instance=ExtResource( 1 )]
+planet_radius = 30.0
+atmosphere_height = 12.0
+shader_params/u_day_color0 = Color( 0.65098, 0.513726, 0.396078, 1 )
+shader_params/u_day_color1 = Color( 0.733333, 0.670588, 0.592157, 1 )
+shader_params/u_night_color0 = Color( 0.262745, 0.215686, 0.172549, 1 )
+shader_params/u_night_color1 = Color( 0, 0, 0, 1 )
+shader_params/u_density = 0.12
+shader_params/u_attenuation_distance = 0.0
+
+[node name="LODSpatial" type="Spatial" parent="."]
+script = ExtResource( 2 )
+lod_0_max_distance = 80.0
+lod_1_max_distance = 200.0
+lod_2_max_distance = 10000.0
+
+[node name="-lod0" parent="LODSpatial" instance=ExtResource( 3 )]
+
+[node name="-lod1" parent="LODSpatial" instance=ExtResource( 4 )]
+
+[node name="-lod2" parent="LODSpatial" instance=ExtResource( 5 )]
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )

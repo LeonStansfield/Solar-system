@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Addons/zylann.atmosphere/planet_atmosphere.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Addons/lod/lod_spatial.gd" type="Script" id=2]
+[ext_resource path="res://Prefabs/Solar system/Planets/Pilto/Meshes/-lod2.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Prefabs/Solar system/Planets/Pilto/Meshes/-lod1_collisions.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Prefabs/Solar system/Planets/Pilto/Meshes/-lod3.tscn" type="PackedScene" id=5]
+
+[sub_resource type="SphereShape" id=1]
+radius = 21.0
+
+[node name="Pilto" type="StaticBody" groups=["Gravity_body"]]
+
+[node name="PlanetAthmosphere" parent="." instance=ExtResource( 1 )]
+planet_radius = 20.0
+atmosphere_height = 8.0
+shader_params/u_day_color0 = Color( 0.678431, 0.886275, 0.886275, 1 )
+shader_params/u_day_color1 = Color( 0.32549, 0.752941, 0.862745, 1 )
+shader_params/u_night_color0 = Color( 0.243137, 0.34902, 0.364706, 1 )
+shader_params/u_night_color1 = Color( 0, 0, 0, 1 )
+shader_params/u_density = 0.03
+shader_params/u_attenuation_distance = 0.0
+
+[node name="LODSpatial" type="Spatial" parent="."]
+script = ExtResource( 2 )
+lod_0_max_distance = 80.0
+lod_1_max_distance = 200.0
+lod_2_max_distance = 10000.0
+
+[node name="-lod1" parent="LODSpatial" instance=ExtResource( 4 )]
+
+[node name="-lod2" parent="LODSpatial" instance=ExtResource( 3 )]
+
+[node name="-lod3" parent="LODSpatial" instance=ExtResource( 5 )]
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )

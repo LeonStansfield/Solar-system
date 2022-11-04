@@ -1,3 +1,54 @@
-[gd_scene format=2]
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Prefabs/Solar system/Planets/Sun/Sun_nonRB.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Prefabs/Solar system/Planets/Harfall/Harfall_nonRB.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Prefabs/Solar system/Planets/Pilto/Pilto_nonRB.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Prefabs/Solar system/Planets/Obton/Obton_nonRB.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/celestial_bodies/Body_orbiter.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/Player/Camera_freelook.gd" type="Script" id=6]
 
 [node name="Simple Solar System" type="Spatial"]
+
+[node name="Celestial bodies" type="Spatial" parent="."]
+
+[node name="Sun" parent="Celestial bodies" instance=ExtResource( 1 )]
+
+[node name="Body_holder" type="Spatial" parent="Celestial bodies"]
+script = ExtResource( 5 )
+rotation_speed = 0.15
+
+[node name="Harfall" parent="Celestial bodies/Body_holder" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1000, 0, 0 )
+
+[node name="PlanetAthmosphere" parent="Celestial bodies/Body_holder/Harfall" index="0"]
+sun_path = NodePath("../../../Sun")
+
+[node name="Body_holder2" type="Spatial" parent="Celestial bodies"]
+script = ExtResource( 5 )
+rotation_speed = 0.3
+
+[node name="Obton" parent="Celestial bodies/Body_holder2" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 500, 0, 0 )
+
+[node name="PlanetAthmosphere" parent="Celestial bodies/Body_holder2/Obton" index="0"]
+sun_path = NodePath("../../../Sun")
+
+[node name="Body_holder3" type="Spatial" parent="Celestial bodies"]
+script = ExtResource( 5 )
+rotation_speed = 0.05
+
+[node name="Pilto" parent="Celestial bodies/Body_holder3" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1500, 0, 0 )
+
+[node name="PlanetAthmosphere" parent="Celestial bodies/Body_holder3/Pilto" index="0"]
+sun_path = NodePath("../../../Sun")
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 155, 0 )
+fov = 90.0
+far = 10000.0
+script = ExtResource( 6 )
+
+[editable path="Celestial bodies/Body_holder/Harfall"]
+[editable path="Celestial bodies/Body_holder2/Obton"]
+[editable path="Celestial bodies/Body_holder3/Pilto"]
