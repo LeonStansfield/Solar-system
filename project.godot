@@ -58,6 +58,11 @@ _global_script_classes=[ {
 "class": "PlanetNoise",
 "language": "GDScript",
 "path": "res://Scripts/Planet_gen/PlanetNoise.gd"
+}, {
+"base": "ImmediateGeometry",
+"class": "Trail3D",
+"language": "GDScript",
+"path": "res://Scripts/celestial_bodies/Planet_trail.gd"
 } ]
 _global_script_class_icons={
 "FreeLookCamera": "",
@@ -69,13 +74,15 @@ _global_script_class_icons={
 "PlanetBiome": "",
 "PlanetData": "",
 "PlanetMeshFace": "",
-"PlanetNoise": ""
+"PlanetNoise": "",
+"Trail3D": ""
 }
 
 [application]
 
 config/name="Solar system"
 run/main_scene="res://Scenes/Solar System.tscn"
+boot_splash/image="res://splash.png"
 config/icon="res://icon.png"
 
 [autoload]

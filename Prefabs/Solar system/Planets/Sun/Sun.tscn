@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/world/DirectionalLight.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/celestial_bodies/DirectionalLight.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/celestial_bodies/CelestialBody.gd" type="Script" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
@@ -15,16 +15,17 @@ radius = 75.0
 
 [node name="Sun" type="RigidBody"]
 script = ExtResource( 2 )
+is_sun = true
 
 [node name="Sun_mesh" type="CSGSphere" parent="."]
 cast_shadow = 0
-radius = 75.0
+radius = 100.0
 radial_segments = 32
 rings = 12
 material = SubResource( 1 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 0, 0, 0 )
 shadow_enabled = true
 directional_shadow_blend_splits = true
 script = ExtResource( 1 )

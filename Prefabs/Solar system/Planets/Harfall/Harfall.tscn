@@ -1,0 +1,174 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Addons/zylann.atmosphere/planet_atmosphere.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Addons/lod/lod_spatial.gd" type="Script" id=2]
+[ext_resource path="res://Prefabs/Solar system/Planets/Harfall/Meshes/-lod0.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Prefabs/Solar system/Planets/Harfall/Meshes/-lod1.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Prefabs/Solar system/Planets/Harfall/Meshes/-lod2.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/celestial_bodies/CelestialBody.gd" type="Script" id=6]
+[ext_resource path="res://Scripts/celestial_bodies/Planet_trail.gd" type="Script" id=7]
+
+[sub_resource type="Shader" id=13]
+code = "/**
+* Ported from the original unity shader by Erik Roystan Ross
+* https://roystan.net/articles/toon-water.html
+* https://github.com/IronWarrior/ToonWaterShader
+* Camera Depth taken from Bastiaan Olij's video on: https://www.youtube.com/watch?v=Jq3he9Lbj7M
+*/
+
+shader_type spatial;
+
+const float SMOOTHSTEP_AA = 0.01;
+
+uniform sampler2D surfaceNoise;
+uniform sampler2D distortNoise;
+
+uniform float beer_factor = 0.8;
+
+uniform float foam_distance = 0.01;
+uniform float foam_max_distance = 0.4;
+uniform float foam_min_distance = 0.04;
+uniform vec4 foam_color: hint_color  = vec4(1.0);
+
+uniform vec2 surface_noise_tiling = vec2(1.0, 4.0);
+uniform vec3 surface_noise_scroll = vec3(0.03, 0.03, 0.0);
+uniform float surface_noise_cutoff: hint_range(0, 1) = 0.777;
+uniform float surface_distortion_amount: hint_range(0, 1) = 0.27;
+
+uniform vec4 _DepthGradientShallow: hint_color = vec4(0.325, 0.807, 0.971, 0.725);
+uniform vec4 _DepthGradientDeep: hint_color = vec4(0.086, 0.407, 1, 0.749);
+uniform float _DepthMaxDistance: hint_range(0, 1) = 1.0;
+uniform float _DepthFactor = 1.0;
+
+varying vec2 noiseUV;
+varying vec2 distortUV;
+varying vec3 viewNormal;
+
+vec4 alphaBlend(vec4 top, vec4 bottom)
+{
+	vec3 color = (top.rgb * top.a) + (bottom.rgb * (1.0 - top.a));
+	float alpha = top.a + bottom.a * (1.0 - top.a);
+	
+	return vec4(color, alpha);
+}
+
+void vertex() {
+	viewNormal = (MODELVIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
+	noiseUV = UV * surface_noise_tiling;
+	distortUV = UV;
+}
+
+void fragment(){
+	// https://www.youtube.com/watch?v=Jq3he9Lbj7M
+	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+	depth = depth * 2.0 - 1.0;
+	depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
+	depth = depth + VERTEX.z;
+	depth = exp(-depth * beer_factor);
+	depth = 1.0 - depth;
+	
+	// Still unsure how to get properly the NORMAL from the camera
+	// this was my best attempt
+	vec3 existingNormal = vec3(dFdx(depth), dFdy(depth), 0);
+	
+	float normalDot = clamp(dot(existingNormal.xyz, viewNormal), 0.0, 1.0);
+	float foamDistance = mix(foam_max_distance, foam_min_distance, normalDot);
+	
+	float foamDepth = clamp(depth / foamDistance, 0.0, 1.0);
+	float surfaceNoiseCutoff = foamDepth * surface_noise_cutoff;
+	
+	vec4 distortNoiseSample = texture(distortNoise, distortUV);
+	vec2 distortAmount = (distortNoiseSample.xy * 2.0 -1.0) * surface_distortion_amount;
+	
+	vec2 noise_uv = vec2(
+		(noiseUV.x + TIME * surface_noise_scroll.x) + distortAmount.x , 
+		(noiseUV.y + TIME * surface_noise_scroll.y + distortAmount.y)
+	);
+	float surfaceNoiseSample = texture(surfaceNoise, noise_uv).r;
+	float surfaceNoiseAmount = smoothstep(surfaceNoiseCutoff - SMOOTHSTEP_AA, surfaceNoiseCutoff + SMOOTHSTEP_AA, surfaceNoiseSample);
+	
+	float waterDepth = clamp(depth / _DepthMaxDistance, 0.0, 1.0) * _DepthFactor;
+	vec4 waterColor = mix(_DepthGradientShallow, _DepthGradientDeep, waterDepth);
+
+	vec4 surfaceNoiseColor = foam_color;
+    surfaceNoiseColor.a *= surfaceNoiseAmount;
+	vec4 color = alphaBlend(surfaceNoiseColor, waterColor);
+	
+	ALBEDO = color.rgb;
+	ALPHA = color.a;
+}"
+
+[sub_resource type="NoiseTexture" id=15]
+
+[sub_resource type="NoiseTexture" id=16]
+
+[sub_resource type="ShaderMaterial" id=17]
+shader = SubResource( 13 )
+shader_param/beer_factor = 0.8
+shader_param/foam_distance = 3.167
+shader_param/foam_max_distance = 0.4
+shader_param/foam_min_distance = 0.04
+shader_param/foam_color = Color( 1, 1, 1, 1 )
+shader_param/surface_noise_tiling = Vector2( 1, 4 )
+shader_param/surface_noise_scroll = Vector3( 0.03, 0.03, 0 )
+shader_param/surface_noise_cutoff = 0.777
+shader_param/surface_distortion_amount = 0.27
+shader_param/_DepthGradientShallow = Color( 0.4, 0.596078, 0.85098, 0.72549 )
+shader_param/_DepthGradientDeep = Color( 0.4, 0.596078, 0.85098, 0.74902 )
+shader_param/_DepthMaxDistance = 1.0
+shader_param/_DepthFactor = 1.0
+shader_param/surfaceNoise = SubResource( 16 )
+shader_param/distortNoise = SubResource( 15 )
+
+[sub_resource type="SphereShape" id=1]
+radius = 45.0
+
+[node name="Harfall" type="RigidBody" groups=["Gravity_body"]]
+mass = 100.0
+script = ExtResource( 6 )
+initial_velocity = Vector3( 0, 0, 150 )
+
+[node name="PlanetAthmosphere" parent="." instance=ExtResource( 1 )]
+planet_radius = 43.0
+atmosphere_height = 15.0
+shader_params/u_day_color0 = Color( 0.380392, 0.486275, 0.54902, 1 )
+shader_params/u_day_color1 = Color( 0.662745, 0.776471, 0.85098, 1 )
+shader_params/u_night_color0 = Color( 0.172549, 0.176471, 0.262745, 1 )
+shader_params/u_night_color1 = Color( 0, 0, 0, 1 )
+shader_params/u_density = 0.12
+shader_params/u_attenuation_distance = 0.0
+
+[node name="LODSpatial" type="Spatial" parent="."]
+script = ExtResource( 2 )
+lod_0_max_distance = 80.0
+lod_1_max_distance = 200.0
+lod_2_max_distance = 10000.0
+
+[node name="-lod0" parent="LODSpatial" instance=ExtResource( 3 )]
+
+[node name="Ocean" type="CSGSphere" parent="LODSpatial/-lod0"]
+radius = 46.0
+radial_segments = 96
+rings = 64
+material = SubResource( 17 )
+
+[node name="-lod1" parent="LODSpatial" instance=ExtResource( 4 )]
+visible = false
+
+[node name="Ocean" type="CSGSphere" parent="LODSpatial/-lod1"]
+radius = 46.0
+radial_segments = 32
+rings = 16
+material = SubResource( 17 )
+
+[node name="-lod2" parent="LODSpatial" instance=ExtResource( 5 )]
+visible = false
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Planet_trail" type="ImmediateGeometry" parent="."]
+script = ExtResource( 7 )
+length = 5000.0
+max_radius = 8.0
+density_lengthwise = 50

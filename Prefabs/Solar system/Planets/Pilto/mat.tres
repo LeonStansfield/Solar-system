@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/Planet_gen/Planet.gdshader" type="Shader" id=1]
+
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 0.003367, 0.272727, 0.676768 )
+colors = PoolColorArray( 0.0104523, 0.412179, 0.535156, 1, 0.15168, 0.6918, 0.826172, 1, 0.742767, 0.822226, 0.833984, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 9 )
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/min_height = 20.0
+shader_param/max_height = 22.0
+shader_param/height_color = SubResource( 8 )

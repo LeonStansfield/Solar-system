@@ -15,17 +15,17 @@ func _physics_process(delta):
 		linear_velocity = Vector3.ZERO
 
 func Gravity(delta):
-	for body in Globals.celestial_bodies:
+	#for body in Globals.celestial_bodies:
 		
-		for otherbody in Globals.celestial_bodies:
+	for otherbody in Globals.celestial_bodies:
 			
-			if otherbody != self:
+		if otherbody != self:
 				
-				var otherbodyMass = otherbody.mass
-				var direction = body.get_translation() - otherbody.get_translation()
-				var distance = direction.length()
+			var otherbodyMass = otherbody.mass
+			var direction = self.get_translation() - otherbody.get_translation()
+			var distance = direction.length()
 				
-				var forceMag = G * (mass * otherbodyMass)
-				var force = direction.normalized() * forceMag
+			var forceMag = G * (mass * otherbodyMass)
+			var force = direction.normalized() * forceMag
 				
-				body.add_central_force(-force)
+			add_central_force(-force)
