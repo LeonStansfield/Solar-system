@@ -3,7 +3,7 @@
 [ext_resource path="res://Addons/zylann.atmosphere/planet_atmosphere.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Addons/lod/lod_spatial.gd" type="Script" id=2]
 [ext_resource path="res://Prefabs/Solar system/Planets/Pilto/Meshes/-lod2.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Prefabs/Solar system/Planets/Pilto/Meshes/-lod1_collisions.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Prefabs/Solar system/Planets/Pilto/Meshes/-lod1_collisions.scn" type="PackedScene" id=4]
 [ext_resource path="res://Prefabs/Solar system/Planets/Pilto/Meshes/-lod3.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SphereShape" id=1]
@@ -28,6 +28,7 @@ lod_1_max_distance = 200.0
 lod_2_max_distance = 10000.0
 
 [node name="-lod1" parent="LODSpatial" instance=ExtResource( 4 )]
+visible = false
 
 [node name="-lod2" parent="LODSpatial" instance=ExtResource( 3 )]
 

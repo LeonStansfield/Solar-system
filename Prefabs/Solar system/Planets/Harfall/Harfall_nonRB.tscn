@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Addons/zylann.atmosphere/planet_atmosphere.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Addons/lod/lod_spatial.gd" type="Script" id=2]
-[ext_resource path="res://Prefabs/Solar system/Planets/Harfall/Meshes/-lod0_collisions.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Prefabs/Solar system/Planets/Harfall/Meshes/-lod0_collisions.scn" type="PackedScene" id=3]
 [ext_resource path="res://Prefabs/Solar system/Planets/Harfall/Meshes/-lod1.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Prefabs/Solar system/Planets/Harfall/Meshes/-lod2.tscn" type="PackedScene" id=5]
 
