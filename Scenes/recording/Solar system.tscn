@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/recording/Planet.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/recording/Sun.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/celestial_bodies/Body_orbiter.gd" type="Script" id=3]
+
+[node name="Solar system" type="Spatial"]
+
+[node name="Sun" parent="." instance=ExtResource( 2 )]
+
+[node name="Spatial" type="Spatial" parent="."]
+script = ExtResource( 3 )
+rotation_speed = 0.2
+
+[node name="Planet" parent="Spatial" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 500, 0, 0 )
+
+[node name="Spatial" type="Spatial" parent="Spatial"]
+transform = Transform( 0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 500, 0, 0 )
+script = ExtResource( 3 )
+rotation_speed = 3.0
+
+[node name="Moon" parent="Spatial/Spatial" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 300, 0, 0 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1000, 0 )
+far = 5000.0

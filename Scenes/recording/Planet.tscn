@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 30.0
+height = 60.0
+
+[sub_resource type="SphereShape" id=2]
+radius = 30.0
+
+[node name="Planet" type="StaticBody"]
+
+[node name="CSGMesh" type="CSGMesh" parent="."]
+mesh = SubResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 2 )

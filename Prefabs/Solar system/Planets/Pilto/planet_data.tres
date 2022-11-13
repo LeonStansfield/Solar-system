@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=6 format=2]
+[gd_resource type="Resource" load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Planet_gen/PlanetNoise.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Planet_gen/PlanetData.gd" type="Script" id=2]
@@ -18,11 +18,25 @@ amplitude = 0.15
 min_height = 0.05
 use_first_layer_as_mask = false
 
+[sub_resource type="OpenSimplexNoise" id=5]
+seed = 97
+octaves = 6
+period = 72.1
+persistence = 0.292
+lacunarity = 3.11
+
+[sub_resource type="Resource" id=6]
+script = ExtResource( 1 )
+noise_map = SubResource( 5 )
+amplitude = 0.668
+min_height = 0.362
+use_first_layer_as_mask = false
+
 [resource]
 script = ExtResource( 2 )
 radius = 20.0
-resolution = 32
-planet_noise = [ SubResource( 4 ) ]
+resolution = 128
+planet_noise = [ SubResource( 4 ), SubResource( 6 ) ]
 biomes = [  ]
 biome_noise = SubResource( 1 )
 biome_amplitude = 0.0

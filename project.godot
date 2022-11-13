@@ -89,6 +89,10 @@ config/icon="res://icon.png"
 
 Globals="*res://Scripts/Globals.gd"
 
+[display]
+
+window/size/fullscreen=true
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/lod/plugin.cfg" )

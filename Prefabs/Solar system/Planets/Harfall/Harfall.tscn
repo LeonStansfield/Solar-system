@@ -145,6 +145,7 @@ lod_1_max_distance = 200.0
 lod_2_max_distance = 10000.0
 
 [node name="-lod0" parent="LODSpatial" instance=ExtResource( 3 )]
+visible = false
 
 [node name="Ocean" type="CSGSphere" parent="LODSpatial/-lod0"]
 radius = 46.0
@@ -153,7 +154,6 @@ rings = 64
 material = SubResource( 17 )
 
 [node name="-lod1" parent="LODSpatial" instance=ExtResource( 4 )]
-visible = false
 
 [node name="Ocean" type="CSGSphere" parent="LODSpatial/-lod1"]
 radius = 46.0
