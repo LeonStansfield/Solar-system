@@ -10,46 +10,51 @@
 [node name="Celestial bodies" type="Spatial" parent="."]
 
 [node name="Sun" parent="Celestial bodies" instance=ExtResource( 1 )]
-mass = 1000.0
-
-[node name="Harfall" parent="Celestial bodies" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0 )
-initial_velocity = Vector3( 0, 0, 125 )
-
-[node name="PlanetAthmosphere" parent="Celestial bodies/Harfall" index="0"]
-sun_path = NodePath("../../Sun")
-
-[node name="Planet_trail" parent="Celestial bodies/Harfall" index="3"]
-visible = false
-density_lengthwise = 75
+mass = 1e+08
 
 [node name="Obton" parent="Celestial bodies" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -347, 0, 0 )
-mass = 80.0
-initial_velocity = Vector3( 0, 0, -100 )
+mass = 800000.0
+initial_velocity = Vector3( 0, 0, -125 )
 
 [node name="PlanetAthmosphere" parent="Celestial bodies/Obton" index="0"]
 sun_path = NodePath("../../Sun")
 
 [node name="Planet_trail" parent="Celestial bodies/Obton" index="3"]
-visible = false
-density_lengthwise = 75
+length = 250.0
+density_lengthwise = 250
+density_around = 10
+
+[node name="Harfall" parent="Celestial bodies" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 725, 0, 0 )
+mass = 1e+06
+initial_velocity = Vector3( 0, 0, 100 )
+
+[node name="PlanetAthmosphere" parent="Celestial bodies/Harfall" index="0"]
+sun_path = NodePath("../../Sun")
+
+[node name="Planet_trail" parent="Celestial bodies/Harfall" index="3"]
+length = 250.0
+density_lengthwise = 250
+density_around = 10
 
 [node name="Pilto" parent="Celestial bodies" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1200, 0, 0 )
-initial_velocity = Vector3( 0, 0, -250 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -883, 0, 0 )
+mass = 600000.0
+initial_velocity = Vector3( 0, 0, -80 )
 
 [node name="PlanetAthmosphere" parent="Celestial bodies/Pilto" index="0"]
 sun_path = NodePath("../../Sun")
 
 [node name="Planet_trail" parent="Celestial bodies/Pilto" index="3"]
-visible = false
-density_lengthwise = 75
+length = 250.0
+density_lengthwise = 250
+density_around = 10
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1500, 0 )
 far = 10000.0
 
-[editable path="Celestial bodies/Harfall"]
 [editable path="Celestial bodies/Obton"]
+[editable path="Celestial bodies/Harfall"]
 [editable path="Celestial bodies/Pilto"]

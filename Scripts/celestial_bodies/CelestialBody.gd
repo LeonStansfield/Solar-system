@@ -25,7 +25,7 @@ func Gravity(delta):
 			var direction = self.get_translation() - otherbody.get_translation()
 			var distance = direction.length()
 				
-			var forceMag = G * (mass * otherbodyMass)
+			var forceMag = G * ((mass * otherbodyMass) / (distance * distance))
 			var force = direction.normalized() * forceMag
 				
 			add_central_force(-force)
